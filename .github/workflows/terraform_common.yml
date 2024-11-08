@@ -1,0 +1,49 @@
+name: Terraform Common
+
+on:
+  workflow_call:
+    inputs:
+      terraform_command:
+        required: true
+        type: string
+        default: "apply"
+        description: "The Terraform command to run. Allowed values: 'apply', 'destroy'"
+      environment:
+        required: true
+        type: string
+        default: "dev"
+        description: "The environment to deploy to. Allowed values: 'dev', 'stag', 'prod'"
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ vars.TF_VERSION || '1.9' }}
+
+      - name: Validate Inputs
+        run: |
+          if [[ "${{ inputs.terraform_command }}" != "apply" && "${{ inputs.terraform_command }}" != "destroy" ]]; then
+            echo "Invalid terraform_command: ${{ inputs.terraform_command }}. Allowed values are 'apply' or 'destroy'."
+            exit 1
+          fi
+
+          if [[ "${{ inputs.environment }}" != "dev" && "${{ inputs.environment }}" != "stag" && "${{ inputs.environment }}" != "prod" ]]; then
+            echo "Invalid environment: ${{ inputs.environment }}. Allowed values are 'dev', 'stag', 'prod'."
+            exit 1
+          fi
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Command
+        run: make ${{ inputs.terraform_command }}  ENV=${{ inputs.environment }}

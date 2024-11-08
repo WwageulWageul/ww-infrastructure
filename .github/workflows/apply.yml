@@ -1,0 +1,20 @@
+name: Terraform Apply
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select environment'
+        required: true
+        type: choice
+        options:
+          - dev
+          - stag
+          - prod
+
+jobs:
+  apply:
+    uses: ./.github/workflows/terraform_common.yml
+    with:
+      terraform_command: "apply"
+      environment: "${{ github.event.inputs.environment }}"

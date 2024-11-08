@@ -1,0 +1,21 @@
+name: Terraform Destroy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select environment'
+        required: true
+        type: choice
+        options:
+          - dev
+          - stag
+          - prod
+
+jobs:
+  destroy:
+    uses: ./.github/workflows/terraform_common.yml
+    with:
+      terraform_command: "destroy"
+      environment: "${{ github.event.inputs.environment }}"
+      terraform_directory: "dev/ww_dev_apnortheast2"
