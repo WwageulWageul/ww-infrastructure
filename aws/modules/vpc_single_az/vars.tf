@@ -1,4 +1,8 @@
-
+variable "env" {
+  description = "value of the environment"
+  type        = string
+  default     = "dev"
+}
 
 variable "vpc_cidr_block" {
   description = "The CIDR block for the VPC"
@@ -18,28 +22,6 @@ variable "fake_subnet_cidr_block" {
   default     = "10.0.2.0/24"
 }
 
-variable "db_name" {
-  description = "The name of the database"
-  type        = string
-  default     = "x"
-}
-variable "db_username" {
-  description = "The username for the database"
-  type        = string
-  default     = "x"
-}
-
-variable "db_password" {
-  description = "value of the password"
-  type        = string
-  default     = "12345678"
-}
-
-variable "db_instance_class" {
-  description = "The instance class for the RDS instance"
-  type        = string
-  default     = "db.t3.micro"
-}
 
 variable "az" {
   description = "The availability zone for the RDS instance"
@@ -53,5 +35,9 @@ variable "fake_az" {
   default     = "ap-northeast-2c"
 }
 
-
+variable "common_tags" {
+  description = "value of the common tags"
+  type        = map(string)
+  nullable    = false
+}
 
