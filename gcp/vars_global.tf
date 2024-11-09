@@ -1,7 +1,7 @@
 variable "project_id" {
   description = "value of the project id"
   type        = string
-  nullable    = false
+  default     = "affable-curve-440700-e1"
 }
 
 variable "gcp_region" {
