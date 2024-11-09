@@ -30,3 +30,9 @@ crash.log
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# dotenv
+.env*
+
+# json keys
+*key.json

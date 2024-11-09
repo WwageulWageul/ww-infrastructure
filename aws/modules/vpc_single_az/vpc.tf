@@ -2,7 +2,7 @@ resource "aws_vpc" "db" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
 
-  tags = merge(local.common_tags, {
+  tags = merge(var.common_tags, {
     Name = "${var.env}-vpc"
   })
 }
@@ -13,7 +13,7 @@ resource "aws_subnet" "public" {
   cidr_block        = var.subnet_cidr_block
   availability_zone = var.az
 
-  tags = merge(local.common_tags, {
+  tags = merge(var.common_tags, {
     Name = "${var.env}-subnet-public"
   })
 }
@@ -24,7 +24,7 @@ resource "aws_subnet" "fake" {
   cidr_block        = var.fake_subnet_cidr_block
   availability_zone = var.fake_az
 
-  tags = merge(local.common_tags, {
+  tags = merge(var.common_tags, {
     Name = "${var.env}-subnet-fake"
   })
 }
@@ -32,7 +32,7 @@ resource "aws_subnet" "fake" {
 resource "aws_internet_gateway" "default" {
   vpc_id = aws_vpc.db.id
 
-  tags = merge(local.common_tags, {
+  tags = merge(var.common_tags, {
     Name = "${var.env}-igw"
   })
 }
@@ -44,7 +44,7 @@ resource "aws_route_table" "public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.default.id
   }
-  tags = merge(local.common_tags, {
+  tags = merge(var.common_tags, {
     Name = "${var.env}-rt-public"
   })
 }
