@@ -1,13 +1,14 @@
+PROVIDER ?= aws
 ENV ?= dev
-DIR = $(ENV)/ww_$(ENV)_apnortheast2
+DIR = $(PROVIDER)/$(ENV)/envs/ww_$(ENV)_$(REGION)
 
 init: 
-	cd $(DIR) && terraform init
+	cd $(DIR) && terraform init && cd -
 
 apply:
-	terraform apply -auto-approve
+	cd $(DIR) && terraform apply -auto-approve && cd -
 
 destroy:
-	terraform destroy -auto-approve
+	cd $(DIR) && terraform destroy -auto-approve && cd -
 
 .PHONY: init apply destroy

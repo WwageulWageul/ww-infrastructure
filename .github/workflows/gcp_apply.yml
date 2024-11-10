@@ -1,31 +1,42 @@
-name: Terraform Provisioning
+name: dev/stag Terraform Provisioning
 
 on:
   workflow_dispatch:
     inputs:
-      environment:
+      env:
         description: "Select environment"
         required: true
         type: choice
         options:
           - dev
           - stag
-          - prod
       region:
         description: "Select region"
         required: true
         type: choice
         options:
-          - us-central1
+          - uscentral1
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      WORKING_DIR: gcp/envs/${{ inputs.environment }}/ww_${{ inputs.region }}
+      ENV: ${{ inputs.env }}
+      REGION: ${{ inputs.region }}
+      PROVIDER: gcp
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: dev
+
+      - name: Set working directory with formatted region
+        id: working_dir
+        run: |
+          FORMATTED_REGION=$(echo "${{ env.REGION }}" | sed 's/-/_/g')
+          echo "working_dir=gcp/envs/${{ env.ENV }}/ww_$FORMATTED_REGION" >> $GITHUB_ENV
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -40,9 +51,11 @@ jobs:
           echo "$GCP_SERVICE_ACCOUNT_KEY" > "$GOOGLE_APPLICATION_CREDENTIALS"
 
       - name: Terraform Init
-        working-directory: ${{ env.WORKING_DIR }}
-        run: terraform init
+        # working-directory: ${{ steps.working_dir.outputs.working_dir }}
+        run: |
+          make init
 
       - name: Terraform Apply
-        working-directory: ${{ env.WORKING_DIR }}
-        run: terraform apply -auto-approve
+        # working-directory: ${{ steps.working_dir.outputs.working_dir }}
+        run: make apply
+        # run: terraform apply -auto-approve
