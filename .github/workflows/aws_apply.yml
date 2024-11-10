@@ -1,4 +1,4 @@
-name: dev/stag Terraform Provisioning
+name: AWS dev/stag Terraform Provisioning
 
 on:
   workflow_dispatch:

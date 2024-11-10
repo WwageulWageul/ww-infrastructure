@@ -1,3 +1,50 @@
+resource "google_project_iam_custom_role" "gcs_create" {
+  role_id     = local.role_ids.gcs_create
+  title       = "GCS Create"
+  description = "Custom role for creating GCS buckets"
+  permissions = [
+    "storage.objects.create",
+    "storage.buckets.create",
+  ]
+  project = var.project_id
+}
+
+resource "google_project_iam_custom_role" "gcs_read" {
+  role_id     = local.role_ids.gcs_read
+  title       = "GCS Read"
+  description = "Custom role for reading GCS buckets"
+  permissions = [
+    "storage.buckets.get",
+    "storage.buckets.list",
+    "storage.objects.get",
+    "storage.objects.list",
+  ]
+  project = var.project_id
+}
+
+resource "google_project_iam_custom_role" "gcs_update" {
+  role_id     = local.role_ids.gcs_update
+  title       = "GCS Update"
+  description = "Custom role for updating GCS buckets"
+  permissions = [
+    "storage.objects.update",
+    "storage.buckets.update",
+  ]
+  project = var.project_id
+}
+
+resource "google_project_iam_custom_role" "gcs_delete" {
+  role_id     = local.role_ids.gcs_delete
+  title       = "GCS Delete"
+  description = "Custom role for Deleting GCS buckets"
+  permissions = [
+    "storage.objects.delete",
+    "storage.buckets.delete",
+  ]
+  project = var.project_id
+}
+
+
 resource "google_project_iam_custom_role" "vpc_create" {
   role_id     = local.role_ids.vpc_create
   title       = "VPC Create"

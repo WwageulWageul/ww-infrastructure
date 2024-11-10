@@ -1,4 +1,4 @@
-name: dev/stag Terraform Provisioning
+name: GCP dev/stag Terraform Provisioning
 
 on:
   workflow_dispatch:
@@ -44,18 +44,12 @@ jobs:
           terraform_version: 1.9.0
 
       - name: Authenticate to GCP
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/gcp-credentials-key.json
-          GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-        run: |
-          echo "$GCP_SERVICE_ACCOUNT_KEY" > "$GOOGLE_APPLICATION_CREDENTIALS"
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
       - name: Terraform Init
-        # working-directory: ${{ steps.working_dir.outputs.working_dir }}
-        run: |
-          make init
+        run: make init
 
       - name: Terraform Apply
-        # working-directory: ${{ steps.working_dir.outputs.working_dir }}
         run: make apply
-        # run: terraform apply -auto-approve

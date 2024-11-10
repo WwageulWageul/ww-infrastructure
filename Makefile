@@ -1,6 +1,6 @@
 PROVIDER ?= aws
 ENV ?= dev
-DIR = $(PROVIDER)/$(ENV)/envs/ww_$(ENV)_$(REGION)
+DIR = $(PWD)/$(PROVIDER)/envs/$(ENV)/ww_$(REGION)
 
 init: 
 	cd $(DIR) && terraform init && cd -

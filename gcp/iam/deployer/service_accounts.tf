@@ -16,6 +16,7 @@ resource "local_file" "dev_deployer_key_file" {
 
 resource "google_project_iam_binding" "dev_deployer" {
   for_each = toset([
+    local.roles.gcs_read,
     local.roles.sql_create,
     local.roles.sql_update,
     local.roles.sql_read,

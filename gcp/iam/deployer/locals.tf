@@ -1,5 +1,10 @@
 locals {
   role_ids = {
+    gcs_create = "${var.env}_gcs_create"
+    gcs_read   = "${var.env}_gcs_read"
+    gcs_update = "${var.env}_gcs_update"
+    gcs_delete = "${var.env}_gcs_delete"
+
     vpc_create = "${var.env}_vpc_create"
     vpc_read   = "${var.env}_vpc_read"
     vpc_update = "${var.env}_vpc_update"
